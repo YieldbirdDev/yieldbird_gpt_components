@@ -1,0 +1,67 @@
+version: 2.1
+
+commands:
+  restore_cache_yieldbird-gpt-component:
+    description: Restore cache
+    steps:
+      - restore_cache:
+          keys:
+            - yieldbird-gpt-component-v1-dependencies-{{ checksum "package.json" }}
+            - yieldbird-gpt-component-v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: yieldbird-gpt-component-v1-dependencies-{{ checksum "package.json" }}
+
+jobs:
+  tests:
+    docker:
+      - image: circleci/node:10.19.0-browsers
+        environment:
+          CHROME_BIN: "/usr/bin/google-chrome"
+          NODE_ENV: test
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache_yieldbird-gpt-component
+
+      - run: yarn test
+  audit:
+    docker:
+      - image: circleci/node:10.19.0-browsers
+        environment:
+          CHROME_BIN: "/usr/bin/google-chrome"
+          NODE_ENV: test
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout:
+          path: ~/repo
+
+      - restore_cache_yieldbird-gpt-component
+
+      - run: yarn run improved-yarn-audit --min-severity moderate
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - tests
+      
+  audit:
+    triggers:
+      - schedule:
+          # every 4th hour from 4 through 16 UTC from Monday to Friday
+          cron: "0 4,8,12,16 * * 1-5"
+          filters:
+            branches:
+              only: develop
+    jobs:
+      - audit

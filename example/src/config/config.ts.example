@@ -1,0 +1,5 @@
+export const config = {
+  uuid: 'your_yieldbird_uuid',
+  unitPath: 'example_ad_unit_path',
+  optDiv: 'example_ad_unit_opt_div'
+}
