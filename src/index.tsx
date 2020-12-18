@@ -1,10 +1,7 @@
-import * as React from 'react'
-import styles from './styles.module.css'
+import {
+  AdManagerContext,
+  AdManagerProvider
+} from './Context/AdManagerProvider'
+import { AdManagerSlot } from './Components/AdManagerSlot'
 
-interface Props {
-  text: string
-}
-
-export const ExampleComponent = ({ text }: Props) => {
-  return <div className={styles.test}>Example Component: {text}</div>
-}
+export { AdManagerContext, AdManagerProvider, AdManagerSlot }

@@ -16,3 +16,32 @@ declare module '*.svg' {
   export default svgUrl
   export { svgComponent as ReactComponent }
 }
+
+interface Googletag {
+  _loaded(): void
+  cmd: googletag.CommandArray
+  defineSlot(
+    adUnitPath: string,
+    size: googletag.GeneralSize,
+    optDiv?: string
+  ): googletag.Slot
+  destroySlots(slots: googletag.Slot[]): void
+  display(divOrSlot?: string | Element | googletag.Slot): void
+  enableServices(): void
+  pubads(): googletag.PubAdsService
+  sizeMapping(): googletag.SizeMappingBuilder
+}
+
+interface Window {
+  googletag: Googletag
+  // eslint-disable-next-line camelcase
+  yb_configuration: { lazyLoad: boolean }
+  Yieldbird: Yieldbird
+}
+
+interface Yieldbird {
+  cmd: Function[]
+  setGPTTargeting(slots: googletag.Slot[]): void
+  refresh(slots?: googletag.Slot[]): void
+  retarget(slots: googletag.Slot[]): void
+}

@@ -1750,6 +1750,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/doubleclick-gpt@^2019041801.0.4":
+  version "2019041801.0.4"
+  resolved "https://registry.yarnpkg.com/@types/doubleclick-gpt/-/doubleclick-gpt-2019041801.0.4.tgz#6cd7abdb4b38216c5ee46d28b8f8d3054c83b365"
+  integrity sha512-VZkwxAGKpKKgwf95T2NhB1MLo3uwMX1iN+KnfywCfpYVzjTtQREUoqtWf4pYmsSrub/st889oXE5JU1Qp1v6mQ==
+
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
