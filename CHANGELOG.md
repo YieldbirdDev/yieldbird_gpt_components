@@ -11,6 +11,10 @@ In addition to above spec use `Action` group to gather all needed actions requir
 ## Unreleased
 
 ### Added
+- AdManagerProvider component
+- AdManagerSlot component
+- Component tests
+- Example and docs
 
 ### Changed
 

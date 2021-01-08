@@ -64,18 +64,22 @@ export class AdManager {
     this.adsToRefresh[optDiv] = slot
 
     this.interval && window.clearInterval(this.interval)
-    this.interval = window.setTimeout(() => {
-      const slots = Object.keys(this.adsToRefresh).map(
-        (el) => this.adsToRefresh[el]
-      )
+    this.interval = window.setTimeout(
+      () => {
+        const slots = Object.keys(this.adsToRefresh).map(
+          (el) => this.adsToRefresh[el]
+        )
 
-      if (slots.length > 0) {
-        window.Yieldbird.cmd.push(() => {
-          window.Yieldbird.refresh()
-          this.adsToRefresh = {}
-        })
-      }
-    }, this.timeout)
+        if (slots.length > 0) {
+          window.Yieldbird.cmd.push(() => {
+            window.Yieldbird.refresh(slots)
+            this.adsToRefresh = {}
+          })
+        }
+      },
+      this.timeout,
+      true
+    )
   }
 
   private static createSlot(

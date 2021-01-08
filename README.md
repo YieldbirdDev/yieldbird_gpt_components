@@ -20,14 +20,54 @@ npm install --save yieldbird_gpt_components
 ```tsx
 import React, { Component } from 'react'
 
-import MyComponent from 'yieldbird_gpt_components'
-import 'yieldbird_gpt_components/dist/index.css'
+import { AdManagerProvider, AdManagerSlot } from 'yieldbird_gpt_components'
 
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
-}
+return (
+  <AdManagerProvider uuid='YOUR_YIELDBIRD_WRAPPER_UUID'>
+    <AdManagerSlot
+      adUnitPath='AD_UNIT_PATH/FOO'
+      size={[[120, 600], [160, 600]]}
+      optDiv='AD_UNIT_DIV_ID'
+    />
+  </AdManagerProvider>
+)
+```
+
+`AdManagerProvider` context component should be placed at the top of your React app. It is responsible for injecting GPT and Yieldbird Wrapper scripts, initializing variables and storing helper data.
+
+`AdManagerSlot` is a simple ad component, with properties similar to GPT slot. It is responsible for rendering ad in specified place. You can use it with following properties:
+| name | type | required | description |
+| :---- |  :----:  |  :----:  | :---- |
+| `adUnitPath` | string | true | Google AdManager ad unit path |
+| `size` | number | true | base slot sizes |
+| `optDiv` | string | true | name of DIV ID of given adUnit |
+| `targeting` | object | false | extra targeting object which can be used to pass aditional key-values pairs to GAM |
+| `sizeMapping` | array | false | array representation of size mapping GPT command calls. Each array element consists of two more arrays, representing viewport size and mapping which correspnds to [GPT setup](https://developers.google.com/publisher-tag/reference#googletag.sizemappingbuilder). |
+
+### Additional targeting example
+```tsx
+<AdManagerSlot
+  adUnitPath='AD_UNIT_PATH/FOO'
+  size={[[120, 600], [160, 600]]}
+  optDiv='AD_UNIT_DIV_ID'
+  targeting={{
+    foo: 'bar',
+    bar: 'baz'
+  }}
+/>
+```
+
+### Size mapping example
+```tsx
+<AdManagerSlot
+  adUnitPath='AD_UNIT_PATH/FOO'
+  size={[[120, 600], [160, 600]]}
+  optDiv='AD_UNIT_DIV_ID'
+  sizeMapping={[
+    [[0, 0], [[120, 600], [160, 600]]],
+    [[600, 0], [[300, 600]]]
+  ]}
+/>
 ```
 
 ## Development

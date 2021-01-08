@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
 import { AdManagerProvider, AdManagerSlot } from 'yieldbird_gpt_components'
-import 'yieldbird_gpt_components/dist/index.css'
 
 const App = () => {
   const [toggle, setToggle] = useState<boolean>(true)
