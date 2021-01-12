@@ -82,6 +82,8 @@ npm start # runs rollup with watch flag
 
 The second part will be running the example/ create-react-app that's linked to the local version of your module.
 
+Make sure to configure your config.ts file basing on config.ts.example.
+
 ```
 # (in another tab)
 cd example
