@@ -16,6 +16,7 @@ const App = () => {
           AD 1
           { toggle && <AdManagerSlot
             adUnitPath={config.unitPath}
+            className='test'
             size={[[120, 600], [160, 600]]}
             optDiv={config.optDiv}
             sizeMapping={[

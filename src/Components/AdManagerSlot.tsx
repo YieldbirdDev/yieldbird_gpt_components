@@ -5,6 +5,7 @@ import { AdManagerContext } from '../Context/AdManagerProvider'
 
 interface Props {
   adUnitPath: string
+  className?: string
   size: googletag.GeneralSize
   optDiv: string
   sizeMapping?: [googletag.SingleSizeArray, googletag.GeneralSize][]
@@ -13,6 +14,7 @@ interface Props {
 
 export const AdManagerSlot: React.FC<Props> = ({
   adUnitPath,
+  className,
   size,
   optDiv,
   sizeMapping,
@@ -44,5 +46,5 @@ export const AdManagerSlot: React.FC<Props> = ({
     }
   }, [adManagerContext])
 
-  return <div id={optDiv} />
+  return <div id={optDiv} className={className} />
 }
