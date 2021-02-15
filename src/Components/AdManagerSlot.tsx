@@ -3,6 +3,8 @@ import React, { useContext, useEffect } from 'react'
 import { AdManager } from '../Utils/AdManager'
 import { AdManagerContext } from '../Context/AdManagerProvider'
 
+import { isIntersectionObserverAvailable } from '../Utils/intersectionObserver'
+
 interface Props {
   adUnitPath: string
   className?: string
@@ -10,6 +12,7 @@ interface Props {
   optDiv: string
   sizeMapping?: [googletag.SingleSizeArray, googletag.GeneralSize][]
   targeting?: { [key: string]: googletag.NamedSize }
+  lazyLoad?: boolean
 }
 
 export const AdManagerSlot: React.FC<Props> = ({
@@ -18,7 +21,8 @@ export const AdManagerSlot: React.FC<Props> = ({
   size,
   optDiv,
   sizeMapping,
-  targeting
+  targeting,
+  lazyLoad
 }) => {
   const adManagerContext = useContext(AdManagerContext)
 
@@ -31,20 +35,29 @@ export const AdManagerSlot: React.FC<Props> = ({
       optDiv,
       refresh,
       sizeMapping,
-      targeting
+      targeting,
+      lazyLoad
     )
       .then((slot) => {
         adManagerContext.registerSlot(slot)
-        refresh && adManagerContext.refreshAd(slot, optDiv)
+
+        if (lazyLoad && isIntersectionObserverAvailable()) {
+          refresh
+            ? adManagerContext.addToLazyWithRetarget(slot, optDiv)
+            : adManagerContext.addToLazyLoad(optDiv)
+        } else {
+          refresh && adManagerContext.refreshAd(slot, optDiv)
+        }
       })
       .catch((e) => {
         console.error(e)
       })
 
     return () => {
+      adManagerContext.removeFromLazyLoad(optDiv)
       AdManager.destroySlot(optDiv)
     }
-  }, [adManagerContext])
+  }, [])
 
   return <div id={optDiv} className={className} />
 }

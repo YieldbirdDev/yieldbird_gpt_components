@@ -1,6 +1,6 @@
 {
   "name": "yieldbird_gpt_components",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Made with create-react-library",
   "author": "YieldbirdDev",
   "license": "MIT",
@@ -67,5 +67,8 @@
   ],
   "dependencies": {
     "improved-yarn-audit": "^2.3.2"
+  },
+  "resolutions": {
+    "**/immer": "^8.0.1"
   }
 }

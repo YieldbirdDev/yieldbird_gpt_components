@@ -32,6 +32,11 @@ interface Googletag {
   sizeMapping(): googletag.SizeMappingBuilder
 }
 
+interface LazySlot {
+  slot: googletag.Slot
+  targetingReady: boolean
+}
+
 interface Window {
   googletag: Googletag
   // eslint-disable-next-line camelcase
@@ -43,6 +48,7 @@ interface Yieldbird {
   cmd: Function[]
   setGPTTargeting(slots: googletag.Slot[]): void
   refresh(slots?: googletag.Slot[]): void
+  retarget(slots?: googletag.Slot[]): void
 }
 
 declare module 'gpt-mock'

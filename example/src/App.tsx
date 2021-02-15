@@ -27,10 +27,21 @@ const App = () => {
               test: 'ao',
               foo: 'bar'
             }}
+            lazyLoad={true}
           /> }
         </div>
         <button onClick={buttonHandler}>Toggle {toggle ? 'OFF' : 'ON'} ads</button>
+        <div>
+          AD 2
+        </div>
       </div>
+      <AdManagerSlot
+        adUnitPath={config.unitPath2}
+        className='test2'
+        size={[[336, 280]]}
+        optDiv={config.optDiv2}
+        lazyLoad={true}
+      />
     </AdManagerProvider>
   )
 }
