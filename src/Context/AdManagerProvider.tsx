@@ -33,11 +33,11 @@ export const AdManagerProvider: React.FC<Props> = ({
       const actionEntries = entries.filter((entry) => entry.isIntersecting)
 
       if (actionEntries.length > 0) {
-        window &&
+        typeof window !== 'undefined' &&
           window.googletag.cmd.push(() => {
             const displayEntries = actionEntries.map((entry) => ({
               slot:
-                window &&
+                typeof window !== 'undefined' &&
                 window.googletag
                   .pubads()
                   .getSlots()
@@ -48,7 +48,11 @@ export const AdManagerProvider: React.FC<Props> = ({
             }))
 
             displayEntries.forEach((element) => {
-              if (window && window.googletag && element.slot) {
+              if (
+                typeof window !== 'undefined' &&
+                window.googletag &&
+                element.slot
+              ) {
                 window.googletag.display(element.slot.getSlotElementId())
                 window.googletag.pubads().refresh([element.slot])
               }

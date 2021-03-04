@@ -1,3 +1,3 @@
 export function isIntersectionObserverAvailable() {
-  return window && 'IntersectionObserver' in window
+  return typeof window !== 'undefined' && 'IntersectionObserver' in window
 }

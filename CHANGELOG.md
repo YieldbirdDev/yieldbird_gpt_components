@@ -10,6 +10,13 @@ In addition to above spec use `Action` group to gather all needed actions requir
 
 ## Unreleased
 
+## [1.1.0] - 2021-01-12 Production
+
+### Added
+- Lazy load feature
+
+## [1.0.0] - 2021-01-12 Production
+
 ### Added
 - AdManagerProvider component
 - AdManagerSlot component
