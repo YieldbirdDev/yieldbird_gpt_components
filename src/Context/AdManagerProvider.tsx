@@ -8,7 +8,7 @@ import { isIntersectionObserverAvailable } from '../Utils/intersectionObserver'
 interface Props {
   collapseEmptyDivs?: boolean
   globalTargeting?: Record<string, string>
-  uuid: string
+  uuid?: string
   refreshDelay?: number
   onImpressionViewable?: (
     event: googletag.events.ImpressionViewableEvent
@@ -127,7 +127,8 @@ export const AdManagerProvider: React.FC<Props> = ({
   }, adsMap)
 
   useEffect(() => {
-    initializeAdStack(uuid)
+    uuid && initializeAdStack(uuid)
+
     adManager.initiaizeGlobalGPTOptions(
       collapseEmptyDivs,
       globalTargeting,
