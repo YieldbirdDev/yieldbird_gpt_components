@@ -25,10 +25,20 @@ export class AdManager {
 
   private retargetTimeout: number
 
-  constructor(
+  constructor(timeout = 1000) {
+    this.adsToRefresh = {}
+    this.adsToRetarget = {}
+    this.refreshInterval = null
+    this.refreshTimeout = timeout
+    this.retargetInterval = null
+    this.retargetTimeout = timeout
+
+    ensureScripts()
+  }
+
+  public initiaizeGlobalGPTOptions(
     collapseEmptyDivs?: boolean,
     globalTargeting?: Record<string, string>,
-    timeout = 1000,
     onImpressionViewable?: (
       event: googletag.events.ImpressionViewableEvent
     ) => void,
@@ -41,15 +51,7 @@ export class AdManager {
     onSlotVisibilityChanged?: (
       event: googletag.events.SlotVisibilityChangedEvent
     ) => void
-  ) {
-    this.adsToRefresh = {}
-    this.adsToRetarget = {}
-    this.refreshInterval = null
-    this.refreshTimeout = timeout
-    this.retargetInterval = null
-    this.retargetTimeout = timeout
-
-    ensureScripts()
+  ): void {
     initiaizeGlobalGPTOptions(
       collapseEmptyDivs,
       globalTargeting,

@@ -105,10 +105,9 @@ describe('AdManagerSlot', () => {
       expect(window.googletag.cmd).toHaveLength(3)
       await wrapper.find('button').simulate('click')
 
-      expect(window.googletag.cmd).toHaveLength(5)
+      expect(window.googletag.cmd).toHaveLength(4)
       // destroy slot command
       window.googletag.cmd[3]()
-      window.googletag.cmd[4]()
 
       expect(window.googletag.destroySlots).toHaveBeenCalledTimes(1)
       await wrapper.find('button').simulate('click')
@@ -116,8 +115,7 @@ describe('AdManagerSlot', () => {
       // create slot command again
       expect(window.Yieldbird.cmd).toHaveLength(2)
       window.Yieldbird.cmd[1]()
-      window.googletag.cmd[5]()
-      window.googletag.cmd[6]()
+      window.googletag.cmd[4]()
 
       expect(window.googletag.enableServices).toHaveBeenCalledTimes(2)
       expect(window.googletag.defineSlot).toHaveBeenCalledTimes(2)

@@ -46,6 +46,7 @@ return (
 | `onSlotResponseReceived` | function | false | Callback function for 'slotResponseReceived' event |
 | `onSlotVisibilityChanged` | function | false | Callback function for 'slotVisibilityChanged' event |
 
+You can find more about GPT events on the official [Google docs](https://developers.google.com/publisher-tag/reference#googletag.events.event). |
 
 `AdManagerSlot` is a simple ad component, with properties similar to GPT slot. It is responsible for rendering ad in specified place. You can use it with following properties:
 | name | type | required | description |

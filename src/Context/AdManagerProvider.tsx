@@ -48,17 +48,8 @@ export const AdManagerProvider: React.FC<Props> = ({
 }) => {
   const [adsMap, setAdsMap] = useState<string[]>([])
 
-  const adManager = new AdManager(
-    collapseEmptyDivs,
-    globalTargeting,
-    refreshDelay,
-    onImpressionViewable,
-    onSlotOnload,
-    onSlotRender,
-    onSlotRequested,
-    onSlotResponseReceived,
-    onSlotVisibilityChanged
-  )
+  const adManager = new AdManager(refreshDelay)
+
   const intersectionObserver =
     isIntersectionObserverAvailable() &&
     new IntersectionObserver((entries, observer) => {
@@ -137,6 +128,16 @@ export const AdManagerProvider: React.FC<Props> = ({
 
   useEffect(() => {
     initializeAdStack(uuid)
+    adManager.initiaizeGlobalGPTOptions(
+      collapseEmptyDivs,
+      globalTargeting,
+      onImpressionViewable,
+      onSlotOnload,
+      onSlotRender,
+      onSlotRequested,
+      onSlotResponseReceived,
+      onSlotVisibilityChanged
+    )
   }, [uuid])
 
   return (
