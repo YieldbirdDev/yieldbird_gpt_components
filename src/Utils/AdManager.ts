@@ -1,6 +1,12 @@
 import { ensureScripts } from './headerScripts'
 
 import { isIntersectionObserverAvailable } from './intersectionObserver'
+import {
+  createSlot,
+  initiaizeGlobalGPTOptions,
+  setTargeting,
+  setSizeMapping
+} from './AdManagerUtils'
 
 export class AdManager {
   private adsToRefresh: {
@@ -19,7 +25,23 @@ export class AdManager {
 
   private retargetTimeout: number
 
-  constructor(timeout = 1000) {
+  constructor(
+    collapseEmptyDivs?: boolean,
+    globalTargeting?: Record<string, string>,
+    timeout = 1000,
+    onImpressionViewable?: (
+      event: googletag.events.ImpressionViewableEvent
+    ) => void,
+    onSlotOnload?: (event: googletag.events.SlotOnloadEvent) => void,
+    onSlotRender?: (event: googletag.events.SlotRenderEndedEvent) => void,
+    onSlotRequested?: (event: googletag.events.SlotRequestedEvent) => void,
+    onSlotResponseReceived?: (
+      event: googletag.events.SlotResponseReceived
+    ) => void,
+    onSlotVisibilityChanged?: (
+      event: googletag.events.SlotVisibilityChangedEvent
+    ) => void
+  ) {
     this.adsToRefresh = {}
     this.adsToRetarget = {}
     this.refreshInterval = null
@@ -28,6 +50,16 @@ export class AdManager {
     this.retargetTimeout = timeout
 
     ensureScripts()
+    initiaizeGlobalGPTOptions(
+      collapseEmptyDivs,
+      globalTargeting,
+      onImpressionViewable,
+      onSlotOnload,
+      onSlotRender,
+      onSlotRequested,
+      onSlotResponseReceived,
+      onSlotVisibilityChanged
+    )
   }
 
   public static defineSlot(
@@ -43,10 +75,10 @@ export class AdManager {
       if (typeof window !== 'undefined') {
         window.Yieldbird.cmd.push(() => {
           window.googletag.cmd.push(() => {
-            const slot = this.createSlot(adUnitPath, size, optDiv)
+            const slot = createSlot(adUnitPath, size, optDiv)
 
-            this.setTargeting(slot, targeting)
-            this.setSizeMapping(slot, sizeMapping)
+            setTargeting(slot, targeting)
+            setSizeMapping(slot, sizeMapping)
 
             !shouldRefreshAds && window.Yieldbird.setGPTTargeting([slot])
             window.googletag.enableServices()
@@ -150,52 +182,5 @@ export class AdManager {
         resolve([])
       }
     })
-  }
-
-  private static createSlot(
-    adUnitPath: string,
-    size: googletag.GeneralSize,
-    optDiv: string
-  ) {
-    let slot = window.googletag
-      .pubads()
-      .getSlots()
-      .find((el) => el.getSlotElementId() === optDiv)
-
-    slot =
-      slot ||
-      window.googletag
-        .defineSlot(adUnitPath, size, optDiv)
-        .addService(window.googletag.pubads())
-
-    slot.clearTargeting()
-
-    return slot
-  }
-
-  private static setTargeting(
-    slot: googletag.Slot,
-    targeting?: { [key: string]: googletag.NamedSize }
-  ) {
-    if (slot && targeting) {
-      Object.keys(targeting).forEach((targetingKey: string) => {
-        slot.setTargeting(targetingKey, targeting[targetingKey])
-      })
-    }
-  }
-
-  private static setSizeMapping(
-    slot: googletag.Slot,
-    sizeMapping?: [googletag.SingleSizeArray, googletag.GeneralSize][]
-  ) {
-    if (sizeMapping) {
-      const sizeMappingBuilder = window.googletag.sizeMapping()
-
-      sizeMapping.forEach((sizeMap) => {
-        sizeMappingBuilder.addSize(sizeMap[0], sizeMap[1])
-      })
-
-      slot.defineSizeMapping(sizeMappingBuilder.build())
-    }
   }
 }

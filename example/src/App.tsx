@@ -10,7 +10,17 @@ const App = () => {
   }, [toggle, setToggle])
 
   return (
-    <AdManagerProvider uuid={config.uuid}>
+    <AdManagerProvider
+      uuid={config.uuid}
+      collapseEmptyDivs
+      globalTargeting={
+        {
+          test_global: '1'
+        }
+      }
+      onImpressionViewable={(event) => { console.log('impresion viewable!', event) }}
+      onSlotRequested={(event) => { console.log('slot requested!', event) }}
+    >
       <div>
         <div>
           AD 1

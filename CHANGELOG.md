@@ -10,6 +10,9 @@ In addition to above spec use `Action` group to gather all needed actions requir
 
 ## Unreleased
 
+### Added
+- Extend GPT supported options
+
 ## [1.1.0] - 2021-01-12 Production
 
 ### Added

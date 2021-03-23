@@ -77,7 +77,7 @@ describe('AdManagerSlot', () => {
       })
 
       expect(wrapper.find('#foo')).toBeTruthy()
-      expect(window.googletag.cmd).toHaveLength(1)
+      expect(window.googletag.cmd).toHaveLength(2)
       expect(window.Yieldbird.cmd).toHaveLength(1)
     })
 
@@ -94,6 +94,7 @@ describe('AdManagerSlot', () => {
       // create slot commands
       window.Yieldbird.cmd[0]()
       window.googletag.cmd[1]()
+      window.googletag.cmd[2]()
 
       expect(window.googletag.enableServices).toHaveBeenCalledTimes(1)
       expect(window.googletag.defineSlot).toHaveBeenCalledTimes(1)
@@ -101,12 +102,13 @@ describe('AdManagerSlot', () => {
       expect(window.Yieldbird.setGPTTargeting).toHaveBeenCalledTimes(1)
 
       expect(window.Yieldbird.cmd).toHaveLength(1)
-      expect(window.googletag.cmd).toHaveLength(2)
+      expect(window.googletag.cmd).toHaveLength(3)
       await wrapper.find('button').simulate('click')
 
-      expect(window.googletag.cmd).toHaveLength(3)
+      expect(window.googletag.cmd).toHaveLength(5)
       // destroy slot command
-      window.googletag.cmd[2]()
+      window.googletag.cmd[3]()
+      window.googletag.cmd[4]()
 
       expect(window.googletag.destroySlots).toHaveBeenCalledTimes(1)
       await wrapper.find('button').simulate('click')
@@ -114,7 +116,8 @@ describe('AdManagerSlot', () => {
       // create slot command again
       expect(window.Yieldbird.cmd).toHaveLength(2)
       window.Yieldbird.cmd[1]()
-      window.googletag.cmd[3]()
+      window.googletag.cmd[5]()
+      window.googletag.cmd[6]()
 
       expect(window.googletag.enableServices).toHaveBeenCalledTimes(2)
       expect(window.googletag.defineSlot).toHaveBeenCalledTimes(2)
@@ -209,6 +212,7 @@ describe('AdManagerSlot', () => {
       // create slot commands
       window.Yieldbird.cmd[0]()
       window.googletag.cmd[1]()
+      window.googletag.cmd[2]()
 
       expect(window.googletag.enableServices).toHaveBeenCalledTimes(1)
       expect(window.googletag.defineSlot).toHaveBeenCalledTimes(1)
@@ -217,7 +221,7 @@ describe('AdManagerSlot', () => {
       await jest.advanceTimersByTime(5000)
       jest.runAllTimers()
 
-      window.googletag.cmd[2]()
+      window.googletag.cmd[3]()
       expect(window.googletag.display).toHaveBeenCalledTimes(1)
       expect(global.IntersectionObserver.prototype.unobserve).toHaveBeenCalled()
     })

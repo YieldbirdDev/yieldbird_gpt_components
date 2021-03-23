@@ -6,8 +6,22 @@ import { initializeAdStack } from '../Utils/headerScripts'
 import { isIntersectionObserverAvailable } from '../Utils/intersectionObserver'
 
 interface Props {
+  collapseEmptyDivs?: boolean
+  globalTargeting?: Record<string, string>
   uuid: string
   refreshDelay?: number
+  onImpressionViewable?: (
+    event: googletag.events.ImpressionViewableEvent
+  ) => void
+  onSlotOnload?: (event: googletag.events.SlotOnloadEvent) => void
+  onSlotRender?: (event: googletag.events.SlotRenderEndedEvent) => void
+  onSlotRequested?: (event: googletag.events.SlotRequestedEvent) => void
+  onSlotResponseReceived?: (
+    event: googletag.events.SlotResponseReceived
+  ) => void
+  onSlotVisibilityChanged?: (
+    event: googletag.events.SlotVisibilityChangedEvent
+  ) => void
 }
 
 export const AdManagerContext = React.createContext({
@@ -22,11 +36,29 @@ export const AdManagerContext = React.createContext({
 export const AdManagerProvider: React.FC<Props> = ({
   children,
   uuid,
-  refreshDelay
+  refreshDelay,
+  collapseEmptyDivs,
+  globalTargeting,
+  onImpressionViewable,
+  onSlotOnload,
+  onSlotRender,
+  onSlotRequested,
+  onSlotResponseReceived,
+  onSlotVisibilityChanged
 }) => {
   const [adsMap, setAdsMap] = useState<string[]>([])
 
-  const adManager = new AdManager(refreshDelay)
+  const adManager = new AdManager(
+    collapseEmptyDivs,
+    globalTargeting,
+    refreshDelay,
+    onImpressionViewable,
+    onSlotOnload,
+    onSlotRender,
+    onSlotRequested,
+    onSlotResponseReceived,
+    onSlotVisibilityChanged
+  )
   const intersectionObserver =
     isIntersectionObserverAvailable() &&
     new IntersectionObserver((entries, observer) => {

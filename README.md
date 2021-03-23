@@ -34,6 +34,18 @@ return (
 ```
 
 `AdManagerProvider` context component should be placed at the top of your React app. It is responsible for injecting GPT and Yieldbird Wrapper scripts, initializing variables and storing helper data.
+| name | type | required | description |
+| :---- |  :----:  |  :----:  | :---- |
+| `collapseEmptyDivs` | boolean | false | Google AdManager collapseEmptyDivs option |
+| `globalTargeting` | object | false | targeting object which can be used to pass aditional key-values pairs to pubads object |
+| `uuid` | string | true | Yieldbird UUID required to load Wrapper script |
+| `onImpressionViewable` | function | false | Callback function for 'impressionViewable' event |
+| `onSlotOnload` | function | false | Callback function for 'slotOnload' event |
+| `onSlotRender` | function | false | Callback function for 'slotRenderEnded' event |
+| `onSlotRequested` | function | false | Callback function for 'slotRequested' event |
+| `onSlotResponseReceived` | function | false | Callback function for 'slotResponseReceived' event |
+| `onSlotVisibilityChanged` | function | false | Callback function for 'slotVisibilityChanged' event |
+
 
 `AdManagerSlot` is a simple ad component, with properties similar to GPT slot. It is responsible for rendering ad in specified place. You can use it with following properties:
 | name | type | required | description |

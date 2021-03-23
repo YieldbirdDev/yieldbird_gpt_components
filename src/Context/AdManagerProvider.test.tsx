@@ -13,6 +13,6 @@ describe('AdManagerSlot', () => {
     })
 
     expect(window.Yieldbird?.cmd).toHaveLength(0)
-    expect(window.googletag?.cmd).toHaveLength(1)
+    expect(window.googletag?.cmd).toHaveLength(2)
   })
 })
