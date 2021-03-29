@@ -3,11 +3,17 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { AdManager } from '../Utils/AdManager'
 import { initializeAdStack } from '../Utils/headerScripts'
 
-import { isIntersectionObserverAvailable } from '../Utils/intersectionObserver'
+import {
+  isIntersectionObserverAvailable,
+  intersectionObserverCallback,
+  intersectionObserverOptions
+} from '../Utils/intersectionObserver'
 
 interface Props {
   collapseEmptyDivs?: boolean
   globalTargeting?: Record<string, string>
+  lazyLoadOffset?: number
+  isMobile?: boolean
   uuid?: string
   refreshDelay?: number
   onImpressionViewable?: (
@@ -35,6 +41,8 @@ export const AdManagerContext = React.createContext({
 
 export const AdManagerProvider: React.FC<Props> = ({
   children,
+  lazyLoadOffset,
+  isMobile,
   uuid,
   refreshDelay,
   collapseEmptyDivs,
@@ -52,41 +60,10 @@ export const AdManagerProvider: React.FC<Props> = ({
 
   const intersectionObserver =
     isIntersectionObserverAvailable() &&
-    new IntersectionObserver((entries, observer) => {
-      const actionEntries = entries.filter((entry) => entry.isIntersecting)
-
-      if (actionEntries.length > 0) {
-        typeof window !== 'undefined' &&
-          window.googletag.cmd.push(() => {
-            const displayEntries = actionEntries.map((entry) => ({
-              slot:
-                typeof window !== 'undefined' &&
-                window.googletag
-                  .pubads()
-                  .getSlots()
-                  .find(
-                    (element) => element.getSlotElementId() === entry.target.id
-                  ),
-              target: entry.target
-            }))
-
-            displayEntries.forEach((element) => {
-              if (
-                typeof window !== 'undefined' &&
-                window.googletag &&
-                element.slot
-              ) {
-                window.googletag.display(element.slot.getSlotElementId())
-                window.googletag.pubads().refresh([element.slot])
-              }
-            })
-          })
-
-        actionEntries.forEach((element) => {
-          observer.unobserve(element.target)
-        })
-      }
-    })
+    new IntersectionObserver(
+      intersectionObserverCallback,
+      intersectionObserverOptions(isMobile, lazyLoadOffset)
+    )
 
   const addToLazyLoad = useCallback((optDiv: string) => {
     const element = document.getElementById(optDiv)

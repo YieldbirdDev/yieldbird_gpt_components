@@ -45,6 +45,8 @@ return (
 | `onSlotRequested` | function | false | Callback function for 'slotRequested' event |
 | `onSlotResponseReceived` | function | false | Callback function for 'slotResponseReceived' event |
 | `onSlotVisibilityChanged` | function | false | Callback function for 'slotVisibilityChanged' event |
+| `lazyLoadOffset` | number | false | Lazy loading offset in relation to viewport (example: 0.5 = 50% of viewport) |
+| `isMobile` | boolean | false | Mobile device flag. Mainly used for setting default lazy load offset when no offset is provided by default |
 
 You can find more about GPT events on the official [Google docs](https://developers.google.com/publisher-tag/reference#googletag.events.event). |
 
