@@ -59,6 +59,8 @@ You can find more about GPT events on the official [Google docs](https://develop
 | `targeting` | object | false | extra targeting object which can be used to pass aditional key-values pairs to GAM |
 | `sizeMapping` | array | false | array representation of size mapping GPT command calls. Each array element consists of two more arrays, representing viewport size and mapping which correspnds to [GPT setup](https://developers.google.com/publisher-tag/reference#googletag.sizemappingbuilder). |
 | `lazyLoad` | boolean | false | whether given adUnit should be lazy loaded |
+| `screeningAd` | boolean | false | Screening ad flag. When ads is set as screening ad, it will reset body background when unmounted |
+
 
 ### Head script
 
