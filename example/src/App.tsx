@@ -33,6 +33,7 @@ const App = () => {
               [[0,0], [[120, 600], [160, 600]]],
               [[600,0], [[300, 600]]]
             ]}
+            screeningAd
             targeting={{
               test: 'ao',
               foo: 'bar'

@@ -69,6 +69,7 @@
     "improved-yarn-audit": "^2.3.2"
   },
   "resolutions": {
-    "**/immer": "^8.0.1"
+    "**/immer": "^8.0.1",
+    "**/elliptic": "^6.5.4"
   }
 }

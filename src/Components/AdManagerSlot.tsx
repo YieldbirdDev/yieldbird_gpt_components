@@ -10,6 +10,7 @@ interface Props {
   className?: string
   size: googletag.GeneralSize
   optDiv: string
+  screeningAd?: boolean
   sizeMapping?: [googletag.SingleSizeArray, googletag.GeneralSize][]
   targeting?: { [key: string]: googletag.NamedSize }
   lazyLoad?: boolean
@@ -18,6 +19,7 @@ interface Props {
 export const AdManagerSlot: React.FC<Props> = ({
   adUnitPath,
   className,
+  screeningAd,
   size,
   optDiv,
   sizeMapping,
@@ -55,7 +57,7 @@ export const AdManagerSlot: React.FC<Props> = ({
 
     return () => {
       adManagerContext.removeFromLazyLoad(optDiv)
-      AdManager.destroySlot(optDiv)
+      AdManager.destroySlot(optDiv, screeningAd)
     }
   }, [])
 
