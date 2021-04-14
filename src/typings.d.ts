@@ -47,7 +47,10 @@ interface Window {
 interface Yieldbird {
   cmd: Function[]
   setGPTTargeting(slots: googletag.Slot[]): void
-  refresh(slots?: googletag.Slot[]): void
+  refresh(
+    slots?: googletag.Slot[] | null,
+    options?: { changeCorrelator: false }
+  ): void
   retarget(slots?: googletag.Slot[]): void
 }
 

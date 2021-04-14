@@ -30,7 +30,9 @@ export function intersectionObserverCallback(
             element.slot
           ) {
             window.googletag.display(element.slot.getSlotElementId())
-            window.googletag.pubads().refresh([element.slot])
+            window.googletag
+              .pubads()
+              .refresh([element.slot], { changeCorrelator: false })
           }
         })
       })

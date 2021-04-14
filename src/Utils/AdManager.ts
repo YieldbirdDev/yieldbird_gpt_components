@@ -88,7 +88,10 @@ export class AdManager {
             if (!lazyLoad || !isIntersectionObserverAvailable()) {
               window.googletag.display(optDiv)
 
-              !shouldRefreshAds && window.googletag.pubads().refresh([slot])
+              !shouldRefreshAds &&
+                window.googletag
+                  .pubads()
+                  .refresh([slot], { changeCorrelator: false })
             }
 
             slot
@@ -138,7 +141,7 @@ export class AdManager {
 
           if (slots.length > 0) {
             window.Yieldbird.cmd.push(() => {
-              window.Yieldbird.refresh(slots)
+              window.Yieldbird.refresh(slots, { changeCorrelator: false })
               this.adsToRefresh = {}
             })
           }
