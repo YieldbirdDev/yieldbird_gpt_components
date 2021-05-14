@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 
-import { AdManager } from '../Utils/AdManager'
 import { AdManagerContext } from '../Context/AdManagerProvider'
 
+import { defineSlot, destroySlot } from '../Utils/AdManagerUtils'
 import { isIntersectionObserverAvailable } from '../Utils/intersectionObserver'
 
 interface Props {
@@ -31,14 +31,15 @@ export const AdManagerSlot: React.FC<Props> = ({
   useEffect(() => {
     const refresh = adManagerContext.shouldRefresh(optDiv)
 
-    AdManager.defineSlot(
+    defineSlot(
       adUnitPath,
       size,
       optDiv,
       refresh,
       sizeMapping,
       targeting,
-      lazyLoad
+      lazyLoad,
+      adManagerContext.refreshOptions()
     )
       .then((slot) => {
         adManagerContext.registerSlot(slot)
@@ -57,7 +58,7 @@ export const AdManagerSlot: React.FC<Props> = ({
 
     return () => {
       adManagerContext.removeFromLazyLoad(optDiv)
-      AdManager.destroySlot(optDiv, screeningAd)
+      destroySlot(optDiv, screeningAd)
     }
   }, [])
 

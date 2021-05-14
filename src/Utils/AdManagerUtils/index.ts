@@ -1,6 +1,5 @@
-import { createSlot } from './createSlot'
+import { defineSlot } from './defineSlot'
+import { destroySlot } from './destroySlot'
 import { initiaizeGlobalGPTOptions } from './initializeGlobalGPTOptions'
-import { setTargeting } from './setTargeting'
-import { setSizeMapping } from './setSizeMapping'
 
-export { createSlot, initiaizeGlobalGPTOptions, setTargeting, setSizeMapping }
+export { defineSlot, destroySlot, initiaizeGlobalGPTOptions }

@@ -16,6 +16,8 @@ interface Props {
   isMobile?: boolean
   uuid?: string
   refreshDelay?: number
+  enableSingleRequest?: boolean
+  updateCorrelator?: boolean
   onImpressionViewable?: (
     event: googletag.events.ImpressionViewableEvent
   ) => void
@@ -36,7 +38,8 @@ export const AdManagerContext = React.createContext({
   shouldRefresh: (_optDiv: string) => false as boolean,
   refreshAd: (_slot: googletag.Slot, _optDiv: string): void => {},
   registerSlot: (_slot: googletag.Slot): void => {},
-  removeFromLazyLoad: (_optDiv: string): void => {}
+  removeFromLazyLoad: (_optDiv: string): void => {},
+  refreshOptions: (): { changeCorrelator: boolean } | undefined => undefined
 })
 
 export const AdManagerProvider: React.FC<Props> = ({
@@ -47,6 +50,8 @@ export const AdManagerProvider: React.FC<Props> = ({
   refreshDelay,
   collapseEmptyDivs,
   globalTargeting,
+  enableSingleRequest,
+  updateCorrelator,
   onImpressionViewable,
   onSlotOnload,
   onSlotRender,
@@ -56,12 +61,16 @@ export const AdManagerProvider: React.FC<Props> = ({
 }) => {
   const [adsMap, setAdsMap] = useState<string[]>([])
 
-  const adManager = new AdManager(refreshDelay)
+  const refreshOptions = useCallback(() => {
+    return updateCorrelator ? undefined : { changeCorrelator: false }
+  }, [updateCorrelator])
+
+  const adManager = new AdManager(refreshDelay, refreshOptions())
 
   const intersectionObserver =
     isIntersectionObserverAvailable() &&
     new IntersectionObserver(
-      intersectionObserverCallback,
+      intersectionObserverCallback(refreshOptions()),
       intersectionObserverOptions(isMobile, lazyLoadOffset)
     )
 
@@ -104,7 +113,7 @@ export const AdManagerProvider: React.FC<Props> = ({
   }, adsMap)
 
   useEffect(() => {
-    uuid && initializeAdStack(uuid)
+    uuid && initializeAdStack(uuid, enableSingleRequest)
 
     adManager.initiaizeGlobalGPTOptions(
       collapseEmptyDivs,
@@ -116,7 +125,7 @@ export const AdManagerProvider: React.FC<Props> = ({
       onSlotResponseReceived,
       onSlotVisibilityChanged
     )
-  }, [uuid])
+  }, [uuid, enableSingleRequest])
 
   return (
     <AdManagerContext.Provider
@@ -126,7 +135,8 @@ export const AdManagerProvider: React.FC<Props> = ({
         refreshAd,
         registerSlot,
         removeFromLazyLoad,
-        shouldRefresh
+        shouldRefresh,
+        refreshOptions
       }}
     >
       {children}
