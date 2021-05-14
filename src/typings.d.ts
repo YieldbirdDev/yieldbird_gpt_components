@@ -47,8 +47,10 @@ interface Window {
 interface Yieldbird {
   cmd: Function[]
   setGPTTargeting(slots: googletag.Slot[]): void
-  refresh(slots?: googletag.Slot[]): void
+  refresh(slots?: googletag.Slot[], optOptions: optOptions): void
   retarget(slots?: googletag.Slot[]): void
 }
+
+type optOptions = { changeCorrelator: boolean } | undefined
 
 declare module 'gpt-mock'

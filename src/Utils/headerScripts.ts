@@ -16,7 +16,7 @@ export function ensureScripts() {
   }
 }
 
-export function initializeAdStack(uuid: string) {
+export function initializeAdStack(uuid: string, enableSingleRequest = false) {
   if (typeof window !== 'undefined') {
     ensureScripts()
     window.yb_configuration = { lazyLoad: true }
@@ -24,6 +24,12 @@ export function initializeAdStack(uuid: string) {
     window.googletag.cmd.push(function () {
       window.googletag.pubads().disableInitialLoad()
     })
+
+    if (enableSingleRequest) {
+      window.googletag.cmd.push(function () {
+        window.googletag.pubads().enableSingleRequest()
+      })
+    }
 
     if (Object.keys(window.googletag).length <= 1) {
       loadScript(

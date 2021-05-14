@@ -3,41 +3,45 @@ export function isIntersectionObserverAvailable() {
 }
 
 export function intersectionObserverCallback(
-  entries: IntersectionObserverEntry[],
-  observer: IntersectionObserver
+  optOptions: { changeCorrelator: boolean } | undefined
 ) {
-  const actionEntries = entries.filter((entry) => entry.isIntersecting)
+  return (
+    entries: IntersectionObserverEntry[],
+    observer: IntersectionObserver
+  ) => {
+    const actionEntries = entries.filter((entry) => entry.isIntersecting)
 
-  if (actionEntries.length > 0) {
-    typeof window !== 'undefined' &&
-      window.googletag.cmd.push(() => {
-        const displayEntries = actionEntries.map((entry) => ({
-          slot:
-            typeof window !== 'undefined' &&
-            window.googletag
-              .pubads()
-              .getSlots()
-              .find(
-                (element) => element.getSlotElementId() === entry.target.id
-              ),
-          target: entry.target
-        }))
+    if (actionEntries.length > 0) {
+      typeof window !== 'undefined' &&
+        window.googletag.cmd.push(() => {
+          const displayEntries = actionEntries.map((entry) => ({
+            slot:
+              typeof window !== 'undefined' &&
+              window.googletag
+                .pubads()
+                .getSlots()
+                .find(
+                  (element) => element.getSlotElementId() === entry.target.id
+                ),
+            target: entry.target
+          }))
 
-        displayEntries.forEach((element) => {
-          if (
-            typeof window !== 'undefined' &&
-            window.googletag &&
-            element.slot
-          ) {
-            window.googletag.display(element.slot.getSlotElementId())
-            window.googletag.pubads().refresh([element.slot])
-          }
+          displayEntries.forEach((element) => {
+            if (
+              typeof window !== 'undefined' &&
+              window.googletag &&
+              element.slot
+            ) {
+              window.googletag.display(element.slot.getSlotElementId())
+              window.googletag.pubads().refresh([element.slot], optOptions)
+            }
+          })
         })
-      })
 
-    actionEntries.forEach((element) => {
-      observer.unobserve(element.target)
-    })
+      actionEntries.forEach((element) => {
+        observer.unobserve(element.target)
+      })
+    }
   }
 }
 

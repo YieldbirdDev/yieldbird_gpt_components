@@ -1,12 +1,6 @@
 import { ensureScripts } from './headerScripts'
 
-import { isIntersectionObserverAvailable } from './intersectionObserver'
-import {
-  createSlot,
-  initiaizeGlobalGPTOptions,
-  setTargeting,
-  setSizeMapping
-} from './AdManagerUtils'
+import { initiaizeGlobalGPTOptions } from './AdManagerUtils'
 
 export class AdManager {
   private adsToRefresh: {
@@ -17,6 +11,8 @@ export class AdManager {
     [key: string]: googletag.Slot
   }
 
+  private optOptions: optOptions
+
   private refreshInterval: number | null
 
   private refreshTimeout: number
@@ -25,9 +21,10 @@ export class AdManager {
 
   private retargetTimeout: number
 
-  constructor(timeout = 1000) {
+  constructor(timeout = 400, optOptions: optOptions) {
     this.adsToRefresh = {}
     this.adsToRetarget = {}
+    this.optOptions = optOptions
     this.refreshInterval = null
     this.refreshTimeout = timeout
     this.retargetInterval = null
@@ -64,67 +61,6 @@ export class AdManager {
     )
   }
 
-  public static defineSlot(
-    adUnitPath: string,
-    size: googletag.GeneralSize,
-    optDiv: string,
-    shouldRefreshAds: boolean,
-    sizeMapping?: [googletag.SingleSizeArray, googletag.GeneralSize][],
-    targeting?: { [key: string]: googletag.NamedSize },
-    lazyLoad?: boolean
-  ): Promise<googletag.Slot> {
-    return new Promise((resolve, reject) => {
-      if (typeof window !== 'undefined') {
-        window.Yieldbird.cmd.push(() => {
-          window.googletag.cmd.push(() => {
-            const slot = createSlot(adUnitPath, size, optDiv)
-
-            setTargeting(slot, targeting)
-            setSizeMapping(slot, sizeMapping)
-
-            !shouldRefreshAds && window.Yieldbird.setGPTTargeting([slot])
-            window.googletag.enableServices()
-
-            if (!lazyLoad || !isIntersectionObserverAvailable()) {
-              window.googletag.display(optDiv)
-
-              !shouldRefreshAds && window.googletag.pubads().refresh([slot])
-            }
-
-            slot
-              ? resolve(slot)
-              : reject(new Error('Slot could not be created.'))
-          })
-        })
-      } else {
-        reject(new Error('Slot could not be created.'))
-      }
-    })
-  }
-
-  public static destroySlot(optDiv: string, screeningAd?: boolean) {
-    if (typeof window !== 'undefined') {
-      window.googletag.cmd.push(() => {
-        const slot = window.googletag
-          .pubads()
-          .getSlots()
-          .find((el) => el.getSlotElementId() === optDiv)
-
-        slot && window.googletag.destroySlots([slot])
-
-        if (screeningAd) {
-          document.body.style.backgroundColor = ''
-          document.body.style.backgroundImage = ''
-          document.body.style.backgroundRepeat = ''
-          document.body.style.backgroundPosition = ''
-          document.body.style.backgroundAttachment = ''
-          document.body.style.backgroundSize = ''
-          document.body.style.cursor = ''
-        }
-      })
-    }
-  }
-
   public refreshSlot(slot: googletag.Slot, optDiv: string) {
     if (typeof window !== 'undefined') {
       this.adsToRefresh[optDiv] = slot
@@ -138,7 +74,7 @@ export class AdManager {
 
           if (slots.length > 0) {
             window.Yieldbird.cmd.push(() => {
-              window.Yieldbird.refresh(slots)
+              window.Yieldbird.refresh(slots, this.optOptions)
               this.adsToRefresh = {}
             })
           }

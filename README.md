@@ -37,7 +37,7 @@ return (
 | name | type | required | description |
 | :---- |  :----:  |  :----:  | :---- |
 | `collapseEmptyDivs` | boolean | false | Google AdManager collapseEmptyDivs option |
-| `globalTargeting` | object | false | targeting object which can be used to pass aditional key-values pairs to pubads object |
+| `globalTargeting` | object | false | Targeting object which can be used to pass aditional key-values pairs to pubads object |
 | `uuid` | string | false | Yieldbird UUID required to load Wrapper script. If not set, you need to provide scripts in your head section, see [Head section](#head-script) |
 | `onImpressionViewable` | function | false | Callback function for 'impressionViewable' event |
 | `onSlotOnload` | function | false | Callback function for 'slotOnload' event |
@@ -47,6 +47,8 @@ return (
 | `onSlotVisibilityChanged` | function | false | Callback function for 'slotVisibilityChanged' event |
 | `lazyLoadOffset` | number | false | Lazy loading offset in relation to viewport (example: 0.5 = 50% of viewport) |
 | `isMobile` | boolean | false | Mobile device flag. Mainly used for setting default lazy load offset when no offset is provided by default |
+| `enableSingleRequest` | boolean | false | Enables single request mode for GPT |
+| `updateCorrelator` | boolean | false | When true, every performed refresh will have its correlator updated (`opt_options=undefined`), read more in opt_options in the official [Google docs](https://developers.google.com/publisher-tag/reference#refreshopt_slots,-opt_options)  |
 
 You can find more about GPT events on the official [Google docs](https://developers.google.com/publisher-tag/reference#googletag.events.event). |
 
