@@ -27,7 +27,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "types": ["doubleclick-gpt", "jest"]
+    "types": [
+      "doubleclick-gpt",
+      "jest"
+    ],
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"

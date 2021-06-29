@@ -16,7 +16,8 @@ export function initiaizeGlobalGPTOptions(
 ): void {
   if (typeof window !== 'undefined') {
     window.googletag.cmd.push(() => {
-      collapseEmptyDivs && window.googletag.pubads().collapseEmptyDivs()
+      collapseEmptyDivs !== undefined &&
+        window.googletag.pubads().collapseEmptyDivs(collapseEmptyDivs)
 
       if (globalTargeting && Object.keys(globalTargeting).length) {
         Object.keys(globalTargeting).forEach((key) => {

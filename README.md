@@ -36,7 +36,7 @@ return (
 `AdManagerProvider` context component should be placed at the top of your React app. It is responsible for injecting GPT and Yieldbird Wrapper scripts, initializing variables and storing helper data.
 | name | type | required | description |
 | :---- |  :----:  |  :----:  | :---- |
-| `collapseEmptyDivs` | boolean | false | Google AdManager collapseEmptyDivs option |
+| `collapseEmptyDivs` | boolean | false | Google AdManager collapseEmptyDivs option. If no parameter is specified, true will be passed as a collapseEmptyDivs argument. |
 | `globalTargeting` | object | false | targeting object which can be used to pass aditional key-values pairs to pubads object |
 | `uuid` | string | false | Yieldbird UUID required to load Wrapper script. If not set, you need to provide scripts in your head section, see [Head section](#head-script) |
 | `onImpressionViewable` | function | false | Callback function for 'impressionViewable' event |

@@ -14,6 +14,11 @@ In addition to above spec use `Action` group to gather all needed actions requir
 - Extend GPT supported options
 - Allow loading scripts throught head section
 
+## [1.6.0] - 2021-06-29 Production
+
+### Changed
+- Update dependencies and collapseEmptyDivs method to pass argument.
+
 ## [1.1.0] - 2021-01-12 Production
 
 ### Added
