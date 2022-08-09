@@ -39,7 +39,7 @@ export const AdManagerContext = React.createContext({
   removeFromLazyLoad: (_optDiv: string): void => {}
 })
 
-export const AdManagerProvider: React.FC<Props> = ({
+export const AdManagerProvider: React.FC<React.PropsWithChildren<Props>> = ({
   children,
   lazyLoadOffset,
   isMobile,
@@ -85,7 +85,7 @@ export const AdManagerProvider: React.FC<Props> = ({
     [adManager]
   )
 
-  const removeFromLazyLoad = useCallback((optDiv) => {
+  const removeFromLazyLoad = useCallback((optDiv: string) => {
     const element = document.getElementById(optDiv)
 
     intersectionObserver && element && intersectionObserver.unobserve(element)
